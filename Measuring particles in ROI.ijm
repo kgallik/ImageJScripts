@@ -1,0 +1,22 @@
+run("Set Measurements...", "area display redirect=None decimal=2");
+Original_image = getTitle();
+setAutoThreshold("Default dark no-reset");
+run("Create Mask");
+Mask_1 = getTitle();
+run("Duplicate...", "title=Mask_2");
+selectWindow("Mask_2");
+run("Fill Holes");
+run("Watershed");
+run("Analyze Particles...", "size=100000-Infinity exclude clear include add");
+roiManager("select", 0);
+run("Create Mask");
+Mask_3 = getTitle();
+selectWindow(Mask_1);
+imageCalculator("Subtract create", Mask_3, Mask_1);
+selectImage("Result of Mask");
+run("Analyze Particles...", "size=1-Infinity exclude include add");
+roiManager("Select", 0);
+roiManager("Rename", "Particle");
+roiManager("deselect");
+roiManager("Measure");
+
